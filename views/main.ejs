@@ -1,0 +1,24 @@
+<%- include('header'); -%>
+
+<div class="box" id="heading">
+  <h1 style="color: green">Today is <%=day%></h1>
+</div>
+<div class="box">
+  <% newItem.map((item)=>{ %>
+  <form id="checked" action="/delete" method="post">
+    <div class="item">
+      <input
+        name="celcius"
+        type="checkbox"
+        onclick="document.getElementById('checked').submit()"
+      />
+      <p><%= item.name%></p>
+    </div>
+  </form>
+  <% }) %>
+  <form class="item" action="/" method="post">
+    <input type="text" name="item" placeholder="newItem" autocomplete="off" />
+    <button type="submit">+</button>
+  </form>
+</div>
+<%- include('footer'); -%>
