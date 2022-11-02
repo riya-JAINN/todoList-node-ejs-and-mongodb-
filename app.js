@@ -14,7 +14,7 @@ const days = [
   "Friday",
   "Saturday",
 ];
-mongoose.connect("mongodb://localhost:27017/Item");
+mongoose.connect("mongodb://localhost:27017/todo");
 const itemsSchema = {
   name: {
     type: String,
@@ -22,48 +22,55 @@ const itemsSchema = {
   },
 };
 
-const Item = mongoose.model("item", itemsSchema);
-
-app.get("/", (req, res) => {
+// app.post("/", (req, res) => {
+//   const item = new Item({ name: req.body.item });
+//   item.save();
+//   res.redirect("/");
+// });
+// app.get("/about", (req, res) => {
+//   res.render("about");
+// });
+app.get("/:name", (req, res) => {
+  const listName = req.params.name;
+  const newSchema = {
+    name: {
+      type: String,
+      required: true,
+    },
+  };
+  const newList = mongoose.model(listName, newSchema);
   let day = new Date().getDay();
   day = days[day];
 
-  Item.find({}, (err, data) => {
+  newList.find({}, (err, data) => {
     if (err) console.log(err);
     else {
       if (data.length === 0) {
-        Item.insertMany(
+        newList.insertMany(
           [{ name: "eat food" }, { name: "drink  water" }],
           (err) => {
             if (err) console.log("error");
             else
-              Item.find({}, (newData) => {
+              newList.find({}, (newData) => {
                 data = newData;
               });
           }
         );
       }
-
       res.render("main", { day: day, newItem: data });
     }
   });
 });
-app.post("/", (req, res) => {
-  const item = new Item({ name: req.body.item });
-  item.save();
-  res.redirect("/");
-});
-app.get("/about", (req, res) => {
-  res.render("about");
-});
-
-app.post("/delete", (req, res) => {
-  console.log(req.body.celcius);
-});
-
-// app.get("/work", (req, res) => {
-//   res.render("main", { day: "work", newItem: workItems });
+// app.post("/delete/:item", (req, res) => {
+//   const id = req.params.item;
+//   console.log(id);
+//   .deleteOne({ id: id }, (err) => {
+//     if (err) console.log(err);
+//     else res.redirect("/");
+//   });
 // });
+
+app.post("/:name", (req, res) => {});
 app.listen(3000, () => {
   console.log("server is up and running");
 });
