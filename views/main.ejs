@@ -1,7 +1,7 @@
 <%- include('header'); -%>
 
 <div class="box" id="heading">
-  <h1 style="color: green">Today is <%=day%></h1>
+  <h1 style="color: green"><%=listName%> List</h1>
 </div>
 <div class="box">
   <% newItem.map((item)=>{ %>
@@ -9,12 +9,13 @@
     <div class="item">
       <input type="checkbox" onchange="this.form.submit()" />
       <p name="p"><%= item.name%></p>
+      <input type="hidden" name="listName" value="<%=listName%>" />
     </div>
   </form>
   <% }) %>
   <form class="item" action="/" method="post">
     <input type="text" name="item" placeholder="newItem" autocomplete="off" />
-    <button type="submit">+</button>
+    <button type="submit" name="List" value="<%=listName%>">+</button>
   </form>
 </div>
 <%- include('footer'); -%>
